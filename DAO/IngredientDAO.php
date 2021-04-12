@@ -17,6 +17,10 @@ class IngredientDAO{
      */
     private $pdo;
 
+    /**
+     * __construct est appelé AUTOMATIQUEMENT 
+     * lors de l'appel à new IngredientDAO()
+     */
     public function __construct()
     {
         try{
@@ -41,6 +45,7 @@ class IngredientDAO{
      * Récupère tous les ingrédients en BDD
      */
     public function getAll(){
+        
         $sql = "SELECT * FROM ingredient";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -65,6 +70,7 @@ class IngredientDAO{
      * Recupère un ingrédients (par id)
      */
     public function getById(int $id){
+
         $sql = "SELECT * FROM ingredient WHERE id=?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute( [$id] );

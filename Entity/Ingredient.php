@@ -53,7 +53,7 @@ class Ingredient
     /**
      * @return bool
      */
-    public function isAllergen()
+    public function getIsAllergen()
     {
         return $this->isAllergen;
     }

@@ -3,7 +3,9 @@
 namespace DAO;
 
 use Entity\Ingredient;
+use Exception;
 use PDO;
+use PDOException;
 
 class IngredientDAO{
     //CRUD
@@ -29,7 +31,7 @@ class IngredientDAO{
              "password"
             );
         }
-        catch(\Exception $e){
+        catch(Exception $e){
             var_dump($e);die();
         }
     }
@@ -38,7 +40,21 @@ class IngredientDAO{
      * Création d'un ingredient en BDD
      */
     public function create(Ingredient $ingredient){
-
+        try{
+            $sql = "INSERT INTO ingredient(name, isAllergen)
+             VALUE (?,?)";
+            $stmt = $this->pdo->prepare($sql);
+            $params = [
+                $ingredient->getName(),
+                $ingredient->getIsAllergen(),
+            ];
+            $stmt->execute($params);
+            return $this->pdo->lastInsertId();
+        }catch(PDOException $e){
+            echo "Erreur lors de l'insertion en BDD <br/>";
+            echo $e->getMessage();
+            die;
+        }
     }
 
     /**
@@ -51,19 +67,21 @@ class IngredientDAO{
         $stmt->execute();
 
         //return $stmt->fetchAll();
-        $result = [];
-        foreach($stmt->fetchAll() as $dbResult){
-            $result[] = $this->dataTransform($dbResult); 
-        }
+        $result = $this->dataTransform($stmt->fetchAll());
         return $result;
     }
 
+
     private function dataTransform(array $dbResult){
-        $ingredient = new Ingredient();
-        $ingredient->setId($dbResult['id']);
-        $ingredient->setName($dbResult['name']);
-        $ingredient->setIsAllergen($dbResult['isAllergen']);
-        return $ingredient;
+        $ingredients = [];
+        foreach($dbResult as $result){
+            $ingredient = new Ingredient();
+            $ingredient->setId($result['id']);
+            $ingredient->setName($result['name']);
+            $ingredient->setIsAllergen($result['isAllergen']);
+            $ingredients[] = $ingredient;
+        }
+        return $ingredients;
     }
 
     /**
@@ -75,11 +93,11 @@ class IngredientDAO{
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute( [$id] );
 
-        $result = [];
-        foreach($stmt->fetchAll() as $dbResult){
-            $result[] = $this->dataTransform($dbResult);
+        $pdoResult = $stmt->fetchAll();
+        if(count($pdoResult) == 0){
+            throw new Exception("Ingredient $id not found");
         }
+        $result = $this->dataTransform($pdoResult);
         return $result[0];
     }
-
 }

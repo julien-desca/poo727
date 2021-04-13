@@ -1,25 +1,18 @@
 <?php
 
-use DAO\IngredientDAO;
-use Entity\Ingredient;
-
 require_once 'autoload.php';
 
+use Controller\CreateIngredientController;
 
-$ingredient = new Ingredient();
-$ingredient->setName("Ananas");
-$ingredient->setIsAllergen(1);
+//on determine l'url demandé
+$uri = $_SERVER['REQUEST_URI'];
 
-$ingredientDAO = new IngredientDAO();
-$lastInsertId = $ingredientDAO->create($ingredient);
-echo "ingredient $lastInsertId enregistré";
-//$ingredients = $ingredientDAO->getAll();
-/*try{
-    $ingredients = $ingredientDAO->getById(98);
-    var_dump($ingredients);
+//on instancie le controller qui correspond à notre URL
+if($uri == "/createIngredient"){
+    $controller = new CreateIngredientController();
 }
-catch(Exception $e){
-    echo "404 not found <br/>" ;
-    echo "exception à la ligne: " . $e->getFile() . " : " $e->getLine() ;
+else{
+    throw new Exception('404 not found');
 }
-*/
+
+$controller->execute();

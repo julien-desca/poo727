@@ -2,6 +2,9 @@
 
 namespace Controller;
 
+use DAO\IngredientDAO;
+use Entity\Ingredient;
+
 /**
  * Class appelé lors de la demande de l'URL /createIngredient
  */
@@ -23,6 +26,13 @@ class CreateIngredientController{
     }
 
     private function doPost(){
+        $datas = $_POST;
+        $ingredient = new Ingredient();
+        $ingredient->setName($datas['name']);
+        $ingredient->setIsAllergen(array_key_exists('isAllergen', $datas));
+        $dao = new IngredientDAO();
+        $dao->create($ingredient);
 
+        echo "Ingredient crée";
     }
 }

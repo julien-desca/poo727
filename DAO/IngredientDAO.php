@@ -26,9 +26,11 @@ class IngredientDAO{
     public function __construct()
     {
         try{
-            $this->pdo = new PDO("mysql:dbname=formationPoo;host=127.0.0.1",
-             "dolibarr",
-             "password"
+            $this->pdo = 
+            new PDO(
+                "mysql:dbname=formationPoo;host=127.0.0.1",
+                "dolibarr",
+                "password"
             );
         }
         catch(Exception $e){
@@ -41,18 +43,21 @@ class IngredientDAO{
      */
     public function create(Ingredient $ingredient){
         try{
-            $sql = "INSERT INTO ingredient(name, isAllergen)
-             VALUE (:name,:isAllergene)";
+            $sql = "INSERT INTO 
+                ingredient(name, isAllergen)
+                VALUE (?,?)";
+            $this->pdo->beginTransaction();
             $stmt = $this->pdo->prepare($sql);
-            /*$params = [
+            $params = [
                 $ingredient->getName(),
                 $ingredient->getIsAllergen(),
-            ];*/
-            $stmt->bindValue(':name', $ingredient->getName());
-            $stmt->bindValue(':isAllergen', $ingredient->getIsAllergen());
-            $stmt->execute();
+            ];
+            //$stmt->bindValue(':name', $ingredient->getName());
+            //$stmt->bindValue(':isAllergen', $ingredient->getIsAllergen());
+            $stmt->execute($params);
+            $this->pdo->commit();
             return $this->pdo->lastInsertId();
-        }catch(PDOException $e){
+        }catch(Exception $e){
             echo "Erreur lors de l'insertion en BDD <br/>";
             echo $e->getMessage();
             die;

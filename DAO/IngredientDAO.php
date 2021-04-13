@@ -44,18 +44,16 @@ class IngredientDAO{
     public function create(Ingredient $ingredient){
         try{
             $sql = "INSERT INTO 
-                ingredient(name, isAllergen)
-                VALUE (?,?)";
-            $this->pdo->beginTransaction();
+                    ingredient(name, isAllergen)
+                    VALUE (?, ?)";
             $stmt = $this->pdo->prepare($sql);
             $params = [
                 $ingredient->getName(),
-                $ingredient->getIsAllergen(),
+                (int)$ingredient->getIsAllergen(),
             ];
             //$stmt->bindValue(':name', $ingredient->getName());
             //$stmt->bindValue(':isAllergen', $ingredient->getIsAllergen());
             $stmt->execute($params);
-            $this->pdo->commit();
             return $this->pdo->lastInsertId();
         }catch(Exception $e){
             echo "Erreur lors de l'insertion en BDD <br/>";

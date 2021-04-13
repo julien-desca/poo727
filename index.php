@@ -1,9 +1,12 @@
 <?php
 
 require_once 'autoload.php';
+session_start();
 
 use Controller\CreateIngredientController;
+use Controller\CreatePizzaController;
 use Controller\ListIngredientController;
+use Controller\ListPizzaController;
 
 //on determine l'url demandé
 $uri = $_SERVER['REQUEST_URI'];
@@ -14,6 +17,12 @@ if($uri == "/createIngredient"){
 }
 elseif($uri == "/listIngredient"){
     $controller = new ListIngredientController();
+}
+elseif($uri == "/createPizza"){
+    $controller = new CreatePizzaController();
+}
+elseif($uri == "/listPizza"){
+    $controller = new ListPizzaController();
 }
 else{
     throw new Exception('404 not found');

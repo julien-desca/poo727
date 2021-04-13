@@ -33,6 +33,6 @@ class CreateIngredientController{
         $dao = new IngredientDAO();
         $dao->create($ingredient);
 
-        echo "Ingredient crée";
+        header("location: /listIngredient");
     }
 }

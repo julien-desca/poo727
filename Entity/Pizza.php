@@ -4,6 +4,9 @@ namespace Entity;
 
 class Pizza
 {
+
+    private $id;
+
     /**
      * @var string
      */
@@ -14,6 +17,14 @@ class Pizza
      */
     private $ingredients;
 
+    public function getId(){
+        return $this->id;
+    }
+
+    public function setId($id){
+        $this->id = $id;
+    }
+    
     /**
      * @return string
      */

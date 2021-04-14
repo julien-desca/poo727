@@ -1,5 +1,6 @@
 <html>
     <body>
+    <?php include 'View/menu.php'?>
         <h1><?= $_SESSION['pizza']->getName() ?></h1>
         <form method="POST">
             <?php foreach($_SESSION['listIngredients'] as $ingredient) : ?>

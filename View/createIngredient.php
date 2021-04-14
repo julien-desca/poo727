@@ -1,5 +1,6 @@
 <html>
     <body>
+        <?php include 'View/menu.php'?>
         <form method="POST">
             <label>Nom
             <input type="text" name="name"/>

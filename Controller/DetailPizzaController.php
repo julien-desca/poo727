@@ -39,5 +39,7 @@ class DetailPizzaController{
 
         $pizzaDao = new PizzaDAO();
         $pizzaDao->updateIngredient($pizzaId, $ingredients);
+
+        header("location: /detailPizza?id=$pizzaId");
     }
 }

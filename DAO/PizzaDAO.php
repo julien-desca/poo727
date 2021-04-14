@@ -122,6 +122,28 @@ class PizzaDAO{
     }
 
     public function updateIngredient(int $pizzaId, array $ingredientsIds){
-        
+        //1. suppression tous les liens entre les ingredients et la pizza $pizzaId
+        $sql = "DELETE FROM ingredient_pizza WHERE pizza_id = ?" ;
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$pizzaId]);
+
+        //2. enregistrer tous les liens entre les $ingredientsIds et $pizzaId
+        foreach($ingredientsIds as $ingredient){
+            $sql = "INSERT INTO ingredient_pizza (ingredient_id, pizza_id) VALUE (?,?)";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$ingredient, $pizzaId]);
+        }
     }
+
+    public function delete(int $pizzaId){
+        $sql = "DELETE FROM ingredient_pizza WHERE pizza_id = ?" ;
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$pizzaId]); 
+
+        $sql = "DELETE FROM pizza WHERE id=?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$pizzaId]);
+    }
+
+
 }

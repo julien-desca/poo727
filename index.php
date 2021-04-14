@@ -8,6 +8,7 @@ use Controller\CreatePizzaController;
 use Controller\ListIngredientController;
 use Controller\ListPizzaController;
 use Controller\DetailPizzaController;
+use Controller\DeletePizzaController;
 
 //on determine l'url demandé
 $uri = $_SERVER['REQUEST_URI'];
@@ -26,6 +27,9 @@ elseif($uri == "/listPizza"){
 }
 elseif(explode("?", $uri)[0] == "/detailPizza"){
     $controller = new DetailPizzaController();
+}
+elseif(explode("?", $uri)[0] == "/deletePizza"){
+    $controller = new DeletePizzaController();
 }
 else{
     throw new Exception('404 not found');

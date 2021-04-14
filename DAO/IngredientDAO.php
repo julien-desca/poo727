@@ -105,4 +105,14 @@ class IngredientDAO{
         $result = $this->dataTransform($pdoResult);
         return $result[0];
     }
+
+    public function delete(int $ingredientId){
+        $sql = "DELETE FROM ingredient_pizza WHERE ingredient_id = ?" ;
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$ingredientId]); 
+
+        $sql = "DELETE FROM ingredient WHERE id=?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$ingredientId]);
+    }
 }

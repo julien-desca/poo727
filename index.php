@@ -5,6 +5,7 @@ session_start();
 
 use Controller\CreateIngredientController;
 use Controller\CreatePizzaController;
+use Controller\DeleteIngredientController;
 use Controller\ListIngredientController;
 use Controller\ListPizzaController;
 use Controller\DetailPizzaController;
@@ -30,6 +31,9 @@ elseif(explode("?", $uri)[0] == "/detailPizza"){
 }
 elseif(explode("?", $uri)[0] == "/deletePizza"){
     $controller = new DeletePizzaController();
+}
+elseif(explode("?", $uri)[0] == "/deleteIngredient"){
+    $controller = new DeleteIngredientController();
 }
 else{
     throw new Exception('404 not found');

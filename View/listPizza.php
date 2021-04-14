@@ -5,7 +5,22 @@
         <ul>
         <?php foreach($_SESSION['listPizza'] as $pizza) : ?>
             <li>
-                <a href="/detailPizza?id=<?=$pizza->getId()?>"><?= $pizza->getName() ?></a>
+
+            <?php 
+                $isAllergen = false;
+                foreach($pizza->getIngredients() as $ingredient){
+                    if($ingredient->getIsAllergen()){
+                        $isAllergen = true;
+                        break;
+                    }
+                }
+                ?>
+
+                <?php if($isAllergen) : ?>
+                    <a href="/detailPizza?id=<?=$pizza->getId()?>"><strong><?= $pizza->getName() ?></strong></a>
+                <?php else: ?>
+                    <a href="/detailPizza?id=<?=$pizza->getId()?>"><?= $pizza->getName() ?></a>
+                <?php endif ?>
                 <a href="/deletePizza?id=<?=$pizza->getId()?>">Supprimer</a>
             </li>
         <?php endforeach ?>
